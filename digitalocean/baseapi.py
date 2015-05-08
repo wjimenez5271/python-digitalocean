@@ -2,11 +2,19 @@
 import json
 import logging
 import requests
+import sys
 try:
     from urlparse import urljoin
 except:
     from urllib.parse import urljoin
 
+if sys.version_info[:3] < (2, 7, 9):
+    # Mitigating Python < 2.7.9 limitations https://urllib3.readthedocs.org/en/latest/security.html#pyopenssl
+    try:
+        import urllib3.contrib.pyopenssl
+        urllib3.contrib.pyopenssl.inject_into_urllib3()
+    except:
+        print "Warning: Unabl to load SSL libraries to support your version of python"
 
 GET = 'GET'
 POST = 'POST'
